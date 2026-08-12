@@ -42,7 +42,8 @@ export const texts = {
 // FRASES ESPECIALES (aparecerán entre las fotos)
 //
 // Temática: Cars, The Big Bang Theory y The Beatles.
-// Se muestra una cada 4 fotos, así que con 32 items entran exactamente 8.
+// Se muestra una cada 4 items de la galería: con 43 items entran 10. Si sumás
+// o quitás fotos, ajustá la cantidad de frases o van a quedar huecos sin nada.
 // Están traducidas al español para que combinen con el resto de la página;
 // si preferís las líneas originales en inglés, es cambiar el campo `text`.
 // ═══════════════════════════════════════════════════════════════════════════
@@ -78,6 +79,14 @@ export const phrases = [
   {
     text: "Toma una canción triste y hazla mejor.",
     author: "The Beatles, «Hey Jude»",
+  },
+  {
+    text: "Provoco en los demás sentimientos que ni ellos mismos entienden.",
+    author: "Rayo McQueen, Cars",
+  },
+  {
+    text: "Déjalo ser, susurra palabras de sabiduría, déjalo ser.",
+    author: "The Beatles, «Let It Be»",
   },
 ];
 
@@ -129,166 +138,220 @@ export const questions = [
 //       dice nada. Escribí qué se ve: { alt: "los dos en la playa al atardecer" }
 // ═══════════════════════════════════════════════════════════════════════════
 export const mediaItems = [
-  // Más imágenes al inicio, luego alternando sin videos consecutivos
   {
     type: "image",
     src: "foto1.jpg",
-    alt: "selfie en el espejo del parasol del auto, con el parqueadero de fondo",
+    alt: "primer plano en picado, ella mirando a la cámara con sus lentes redondos",
   },
   {
     type: "image",
     src: "foto2.jpg",
-    alt: "los dos en el comedor de casa, uno asomado a la cámara y la otra mirando de reojo",
+    alt: "ella posando frente a una vitrina llena de máscaras andinas pintadas de colores",
   },
   {
     type: "image",
     src: "foto3.jpg",
-    alt: "los dos con gorros de Papá Noel frente a un espejo, cargando una bolsa de regalos",
+    alt: "los dos con máscaras pintadas puestas, una negra y una de payaso",
   },
   {
     type: "image",
     src: "foto4.jpg",
-    alt: "selfie de los dos en un espejo de noche, ella con buzo blanco y audífonos al cuello",
+    alt: "ella en una terraza del centro de Quito, con El Panecillo y la Virgen al fondo",
   },
   {
     type: "image",
     src: "foto5.jpg",
-    alt: "los dos muy juntos en el gimnasio",
-  },
-  {
-    type: "video",
-    src: "video1.mp4",
-    alt: "los dos en el auto, ella con un abrigo rosado en el asiento de atrás",
+    alt: "selfie de los dos muy juntos, él con lentes y camisa blanca",
   },
   {
     type: "image",
     src: "foto6.jpg",
-    alt: "los dos tomados de las manos en la calle de noche, junto a una parada de bus",
+    alt: "ella haciendo la V en un sendero de montaña, con el valle y las nubes detrás",
   },
   {
     type: "image",
     src: "foto7.jpg",
-    alt: "selfie de los dos dentro de un bus",
+    alt: "los dos abrigados en la cima de una montaña, con el cielo nublado detrás",
   },
   {
     type: "image",
     src: "foto8.jpg",
-    alt: "selfie en el espejo del gimnasio, él con guantes de entrenamiento",
-  },
-  {
-    type: "video",
-    src: "video2.mp4",
-    alt: "selfie de los dos con filtro de cámara antigua, con la fecha 19 de febrero de 2023 sobreimpresa",
+    alt: "selfie de los dos en el metro, ella con audífonos",
   },
   {
     type: "image",
     src: "foto9.jpg",
-    alt: "un día al aire libre con amigos, con una carpa amarilla y el cielo nublado de fondo",
+    alt: "selfie de los dos en el espejo de un ascensor",
   },
   {
     type: "image",
     src: "foto10.jpg",
-    alt: "los dos entre la gente en un lugar concurrido",
+    alt: "ella con los palillos en la mano y una tabla de sushi servida en la mesa",
+  },
+  {
+    type: "video",
+    src: "video1.mp4",
+    alt: "ella mirando a la cámara, con top de cuadros y la mochila puesta",
   },
   {
     type: "image",
     src: "foto11.jpg",
-    alt: "los dos de noche, bajo luces rosadas",
-  },
-  {
-    type: "video",
-    src: "video3.mp4",
-    alt: "los dos de noche en un lugar con luces rojas",
+    alt: "ella apoyada en la vitrina de un museo, con una maqueta enorme de un templo detrás",
   },
   {
     type: "image",
     src: "foto12.jpg",
-    alt: "los dos en el gimnasio, con las luces moradas del lugar",
+    alt: "ella de noche frente a una iglesia colonial iluminada",
   },
   {
     type: "image",
     src: "foto13.jpg",
-    alt: "ella con gorro blanco mirando por la ventana de una cafetería, con un café con leche y algo para comer en la mesa",
+    alt: "ella al tope de una escalinata, con el cielo bien azul detrás",
   },
   {
     type: "image",
     src: "foto14.jpg",
-    alt: "los dos sonriendo en la cafetería, con el letrero 'La vida empieza después del café' en la pared de ladrillo",
-  },
-  {
-    type: "video",
-    src: "video4.mp4",
-    alt: "los dos con la camiseta roja de la carrera, de noche en la calle",
+    alt: "ella de negro apoyada en una pared blanca",
   },
   {
     type: "image",
     src: "foto15.jpg",
-    alt: "los dos con gafas de sol junto a una piscina, en un día nublado",
+    alt: "ella en la escalera de un edificio antiguo, con columnas y claraboya",
   },
   {
     type: "image",
     src: "foto16.jpg",
-    alt: "los dos con camiseta roja, dorsal y medalla al terminar una carrera nocturna",
+    alt: "ella frente al monumento de la Mitad del Mundo iluminado de noche",
   },
   {
     type: "image",
     src: "foto17.jpg",
-    alt: "los dos en un lugar con luces azules y moradas de neón",
-  },
-  {
-    type: "video",
-    src: "video5.mp4",
-    alt: "los dos muy cerca de la cámara, de noche",
+    alt: "ella con poncho y el casco en la mano, con globos aerostáticos en el cielo",
   },
   {
     type: "image",
     src: "foto18.jpg",
-    alt: "los dos en una fiesta de Halloween, frente a un mural que dice 'Halloween Fest II'",
+    alt: "señalando los globos aerostáticos que se elevan sobre las montañas",
   },
   {
     type: "image",
     src: "foto19.jpg",
-    alt: "selfie en un espejo redondo colgado en la pared de la sala",
+    alt: "los dos festejando con una porción de torta de chocolate y una vela",
   },
   {
     type: "image",
     src: "foto20.jpg",
-    alt: "los dos en el auto de noche, él con gafas de sol",
-  },
-  {
-    type: "video",
-    src: "video6.mp4",
-    alt: "ella mirando a la cámara, con aretes de argolla",
+    alt: "ella sentada dentro de una casa tradicional de techo de paja",
   },
   {
     type: "image",
     src: "foto21.jpg",
-    alt: "él dándole un beso en la mejilla mientras ella sonríe a la cámara",
+    alt: "los dos en un sendero entre la vegetación, con vinchas iguales",
   },
   {
     type: "image",
     src: "foto22.jpg",
-    alt: "selfie de los dos muy cerca de la cámara, con luz cálida",
+    alt: "selfie de los dos frente a una cascada",
   },
   {
     type: "video",
-    src: "video7.mp4",
-    alt: "ella tapándose la boca de la risa, bajo una luz rosada",
+    src: "video2.mp4",
+    alt: "la vela encendida sobre la porción de torta de chocolate",
+  },
+  {
+    type: "image",
+    src: "foto23.jpg",
+    alt: "ella en un puente colgante al pie de una cascada enorme",
+  },
+  {
+    type: "image",
+    src: "foto24.jpg",
+    alt: "ella con vincha de reno y una caja de caramelos al lado",
+  },
+  {
+    type: "image",
+    src: "foto25.jpg",
+    alt: "los dos en un mirador de madera, con las montañas entre la neblina",
+  },
+  {
+    type: "image",
+    src: "foto26.jpg",
+    alt: "ella al pie de una cascada alta, con el sol asomando entre las rocas",
+  },
+  {
+    type: "image",
+    src: "foto27.jpg",
+    alt: "selfie de los dos frente a una cascada, ella con sombrero de paja",
+  },
+  {
+    type: "image",
+    src: "foto28.jpg",
+    alt: "ella sobre las rocas de un cañón verde, haciendo la V",
+  },
+  {
+    type: "image",
+    src: "foto29.jpg",
+    alt: "selfie de los dos de noche, con una estructura roja iluminada detrás",
+  },
+  {
+    type: "image",
+    src: "foto30.jpg",
+    alt: "primer plano de ella con buzo blanco",
+  },
+  {
+    type: "image",
+    src: "foto31.jpg",
+    alt: "los dos muy juntos, con la luz del sol entrando de costado",
+  },
+  {
+    type: "image",
+    src: "foto32.jpg",
+    alt: "ella riéndose junto al corral de una cabra",
+  },
+  {
+    type: "image",
+    src: "foto33.jpg",
+    alt: "ella señalando unas avestruces en un campo verde",
   },
   {
     type: "video",
-    src: "video8.mp4",
-    alt: "él haciendo una mueca frente a la cámara y ella detrás, en casa",
+    src: "video3.mp4",
+    alt: "ella caminando hacia una llama en un campo verde",
   },
   {
-    type: "video",
-    src: "video9.mp4",
-    alt: "los dos en el auto de noche",
+    type: "image",
+    src: "foto34.jpg",
+    alt: "ella con gorra, tomándose una foto en un pasillo de azulejos",
   },
   {
-    type: "video",
-    src: "video10.mp4",
-    alt: "él con gafas de sol y filtro de cámara antigua, con la fecha 1 de abril de 2023 sobreimpresa",
+    type: "image",
+    src: "foto35.jpg",
+    alt: "ella con la camiseta número 30 al borde de una cancha",
+  },
+  {
+    type: "image",
+    src: "foto36.jpg",
+    alt: "selfie de los dos bajo un cielo cargado de nubes",
+  },
+  {
+    type: "image",
+    src: "foto37.jpg",
+    alt: "los dos en la playa, mostrando algo frito con queso encima",
+  },
+  {
+    type: "image",
+    src: "foto38.jpg",
+    alt: "foto vieja: ella de chiquita, sentada en la cama abrazando un peluche",
+  },
+  {
+    type: "image",
+    src: "foto39.jpg",
+    alt: "foto vieja: ella de bebé, con un buzo deportivo azul",
+  },
+  {
+    type: "image",
+    src: "foto40.jpg",
+    alt: "primer plano de ella al aire libre, con el pelo suelto",
   },
 ];
 
