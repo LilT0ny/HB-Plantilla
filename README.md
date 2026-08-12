@@ -52,10 +52,12 @@ no hace falta tocar el JSX.
 
 ## Deploy en Vercel
 
-El `vercel.json` ya trae el rewrite de SPA (todo a `/index.html`).
+El proyecto vive en la **raíz del repo**, así que no hay nada que configurar:
+Vercel detecta Vite solo y el `vercel.json` ya trae el rewrite de SPA
+(todo a `/index.html`, necesario para que la SPA no tire 404).
 
-Lo único que hay que configurar **en el panel de Vercel**, no en un archivo:
-**Settings → General → Root Directory = `HB_Plantillas/birthday-gift`**.
-
-> `rootDirectory` **no** es una clave válida de `vercel.json`. Si la ponés ahí,
-> Vercel la ignora y el deploy falla sin decirte por qué.
+> Si en el panel de Vercel quedó un **Root Directory** apuntando a una subcarpeta
+> de cuando el proyecto estaba anidado, **borralo** — ahora tiene que estar vacío.
+>
+> Y ojo: `rootDirectory` **no** es una clave válida de `vercel.json`. Si la ponés
+> ahí, Vercel la ignora y el deploy falla sin decirte por qué.
