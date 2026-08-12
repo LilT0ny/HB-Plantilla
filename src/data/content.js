@@ -56,8 +56,12 @@ export const phrases = [
 // ═══════════════════════════════════════════════════════════════════════════
 // CONFIGURACIÓN DE MEDIA
 // Fotos y videos mezclados para una experiencia dinámica
+//
 // type: 'image' o 'video'
-// src: nombre del archivo en src/assets/media/
+// src:  nombre del archivo en src/assets/media/
+// alt:  (opcional) descripción de la foto para lectores de pantalla.
+//       Si no la ponés, se usa "Foto N de la galería", que funciona pero no
+//       dice nada. Escribí qué se ve: { alt: "los dos en la playa al atardecer" }
 // ═══════════════════════════════════════════════════════════════════════════
 export const mediaItems = [
   // Más imágenes al inicio, luego alternando sin videos consecutivos

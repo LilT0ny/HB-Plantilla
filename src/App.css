@@ -730,3 +730,80 @@ body {
     padding-bottom: max(calc(var(--space-xl) + 2rem), calc(env(safe-area-inset-bottom) + var(--space-xl)));
   }
 }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   ACCESIBILIDAD
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Visible solo para lectores de pantalla. No se usa display:none ni
+   visibility:hidden porque eso lo esconde también del lector. */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Indicador de foco. La app no tenía NINGUNO: quien navega con teclado no
+   tenía forma de saber dónde estaba parado. :focus-visible lo muestra solo
+   cuando corresponde (teclado), no al hacer click con el mouse. */
+:focus-visible {
+  outline: 3px solid var(--color-accent);
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* Sobre el fondo oscuro del modal el acento no contrasta lo suficiente */
+.modal :focus-visible {
+  outline-color: #ffffff;
+}
+
+/* Las tarjetas de la galería ahora son <button>. Hay que devolverles el
+   comportamiento de bloque que tenían como <div>, o rompen el masonry
+   de columnas. */
+.media-card {
+  display: block;
+  width: 100%;
+  border: none;
+  background: var(--color-card);
+  font: inherit;
+  color: inherit;
+  text-align: inherit;
+  padding: 0;
+}
+
+/* Capa de click para cerrar el modal. Va detrás del contenido para no
+   robarle los clicks a la imagen ni al botón de cerrar. */
+.modal-backdrop {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.modal-content {
+  position: relative;
+  z-index: 1;
+}
+
+.modal-close {
+  z-index: 2;
+}
+
+/* Respetar a quien pidió menos movimiento en su sistema. Las animaciones de
+   entrada escalonadas y los fundidos pueden provocar mareo y náuseas a
+   personas con trastornos vestibulares. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

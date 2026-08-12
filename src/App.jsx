@@ -18,8 +18,46 @@ function getMediaUrl(filename) {
   return mod?.default || ''
 }
 
+// Los SVG de esta app son decorativos: el nombre accesible siempre lo aporta
+// el texto del botón o su aria-label. Marcarlos así evita que el lector de
+// pantalla anuncie ruido.
+const decorativeSvg = { 'aria-hidden': true, focusable: 'false' }
+
+// Nombre accesible de cada pieza de la galería. Si content.js trae un `alt`
+// escrito a mano se usa ese, porque describe la foto de verdad; si no, al menos
+// se dice qué es y en qué posición está, que es mucho mejor que un alt vacío.
+function mediaLabel(media, position) {
+  const tipo = media.type === 'video' ? 'Video' : 'Foto'
+  if (media.alt) return `${tipo}: ${media.alt}`
+  return position ? `${tipo} ${position} de la galería` : tipo
+}
+
+// Botón de música. Vive FUERA de App a propósito: definido adentro, React lo
+// trataría como un tipo de componente nuevo en cada render y lo desmontaría y
+// volvería a montar, perdiendo foco y estado.
+function MusicButton({ isPlaying, onToggle }) {
+  return (
+    <button
+      type="button"
+      className="music-control"
+      onClick={onToggle}
+      aria-label={isPlaying ? 'Pausar música' : 'Reproducir música'}
+    >
+      {isPlaying ? (
+        <svg viewBox="0 0 24 24" fill="currentColor" {...decorativeSvg}>
+          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+        </svg>
+      ) : (
+        <svg viewBox="0 0 24 24" fill="currentColor" {...decorativeSvg}>
+          <path d="M8 5v14l11-7z"/>
+        </svg>
+      )}
+    </button>
+  )
+}
+
 // Componente para video con autoplay en scroll (móvil)
-function VideoCard({ src, onClick }) {
+function VideoCard({ src }) {
   const videoRef = useRef(null)
 
   useEffect(() => {
@@ -45,12 +83,14 @@ function VideoCard({ src, onClick }) {
   }, [])
 
   return (
+    // Sin `controls`: el <video> no es contenido interactivo, por eso puede ir
+    // dentro del <button> de la tarjeta. El click y el teclado los maneja ese
+    // botón; el hover de acá es solo un extra para mouse.
     <video
       ref={videoRef}
       muted
       playsInline
       loop
-      onClick={onClick}
       onMouseEnter={(e) => e.target.play()}
       onMouseLeave={(e) => {
         e.target.pause()
@@ -73,6 +113,8 @@ function App() {
   const [selectedMedia, setSelectedMedia] = useState(null)
   const audioRef = useRef(null)
   const hasInteracted = useRef(false)
+  const modalCloseRef = useRef(null)
+  const lastFocusedRef = useRef(null)
   
   const musicUrl = getMediaUrl(backgroundMusic)
 
@@ -228,6 +270,27 @@ function App() {
     return removeListeners
   }, [])
 
+  // Manejo de foco y Escape del modal. Sin esto, quien navega con teclado abre
+  // el modal y queda varado: el foco se queda atrás, en la galería, y no hay
+  // forma de cerrarlo sin mouse.
+  useEffect(() => {
+    if (!selectedMedia) return
+
+    // Guardar quién tenía el foco para devolvérselo al cerrar
+    lastFocusedRef.current = document.activeElement
+    modalCloseRef.current?.focus()
+
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') setSelectedMedia(null)
+    }
+    document.addEventListener('keydown', handleKeyDown)
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown)
+      lastFocusedRef.current?.focus?.()
+    }
+  }, [selectedMedia])
+
   const toggleMusic = () => {
     if (audioRef.current) {
       if (isPlaying) {
@@ -245,7 +308,7 @@ function App() {
     let phraseIndex = 0
     
     loadedMedia.forEach((media, index) => {
-      items.push({ type: 'media', data: media, id: `media-${index}` })
+      items.push({ type: 'media', data: media, id: `media-${index}`, position: index + 1 })
       
       // Agregar una frase cada 3-4 fotos
       if ((index + 1) % 4 === 0 && phraseIndex < phrases.length) {
@@ -257,21 +320,6 @@ function App() {
     return items
   }
 
-  // Componente del botón de música (reutilizable)
-  const MusicButton = () => (
-    <button className="music-control" onClick={toggleMusic}>
-      {isPlaying ? (
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M8 5v14l11-7z"/>
-        </svg>
-      )}
-    </button>
-  )
-
   return (
     <>
       {/* Audio GLOBAL - siempre montado, nunca se desmonta */}
@@ -282,7 +330,7 @@ function App() {
       )}
 
       {/* Botón de música GLOBAL - siempre visible */}
-      <MusicButton />
+      <MusicButton isPlaying={isPlaying} onToggle={toggleMusic} />
 
       {/* Pantalla de Intro */}
       {showIntro && (
@@ -293,9 +341,9 @@ function App() {
             <div className="intro-line"></div>
             <p className="intro-message">Toda tú eres bella, no hay en ti defecto alguno.<br/><span className="verse-ref">(Cantares 4:7)</span></p>
             
-            <button className="enter-button" onClick={startQuiz}>
+            <button type="button" className="enter-button" onClick={startQuiz}>
               <span>entrar</span>
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" {...decorativeSvg}>
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
             </button>
@@ -307,8 +355,8 @@ function App() {
       {showQuiz && (
         <div className="intro-screen quiz-screen">
           {/* Botón volver */}
-          <button className="quiz-back" onClick={goBackQuestion}>
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+          <button type="button" className="quiz-back" onClick={goBackQuestion}>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" {...decorativeSvg}>
               <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
             <span>{currentQuestion === 0 ? 'volver' : 'anterior'}</span>
@@ -320,17 +368,26 @@ function App() {
             
             <h2 className="quiz-question">{questions[currentQuestion].question}</h2>
             
+            {/* Región viva persistente: tiene que existir en el DOM ANTES de
+                que cambie su contenido, o el lector de pantalla no anuncia nada.
+                Por eso no se monta y desmonta junto con el feedback visual. */}
+            <p className="sr-only" role="status">
+              {showCorrect && '¡Correcto!'}
+              {showHint && `Respuesta incorrecta. Pista: ${questions[currentQuestion].hint}`}
+            </p>
+
             {showCorrect ? (
               <div className="quiz-correct">
-                <span className="quiz-correct-icon">✓</span>
+                <span className="quiz-correct-icon" aria-hidden="true">✓</span>
                 <p>¡Correcto!</p>
               </div>
             ) : (
               <>
                 <div className="quiz-options">
                   {questions[currentQuestion].options.map((option, index) => (
-                    <button 
-                      key={index} 
+                    <button
+                      type="button"
+                      key={option}
                       className="quiz-option"
                       onClick={() => handleAnswer(index)}
                     >
@@ -338,10 +395,10 @@ function App() {
                     </button>
                   ))}
                 </div>
-                
+
                 {showHint && (
                   <div className="quiz-hint">
-                    <p>💡 Pista: {questions[currentQuestion].hint}</p>
+                    <p><span aria-hidden="true">💡</span> Pista: {questions[currentQuestion].hint}</p>
                   </div>
                 )}
               </>
@@ -376,25 +433,25 @@ function App() {
               const mediaUrl = getMediaUrl(item.data.src)
               if (!mediaUrl) return null
 
+              // Botón real, no un div con onClick: así se llega con Tab, se
+              // activa con Enter y Espacio, y el lector de pantalla lo anuncia
+              // como control. El alt de la imagen va vacío a propósito — el
+              // nombre accesible lo aporta el aria-label del botón y repetirlo
+              // haría que se anuncie dos veces.
               return (
-                <div 
-                  key={item.id} 
+                <button
+                  type="button"
+                  key={item.id}
                   className="gallery-item media-card"
+                  onClick={() => setSelectedMedia(item.data)}
+                  aria-label={`Ampliar. ${mediaLabel(item.data, item.position)}`}
                 >
                   {item.data.type === 'video' ? (
-                    <VideoCard 
-                      src={mediaUrl} 
-                      onClick={() => setSelectedMedia(item.data)}
-                    />
+                    <VideoCard src={mediaUrl} />
                   ) : (
-                    <img 
-                      src={mediaUrl} 
-                      alt="" 
-                      loading="lazy" 
-                      onClick={() => setSelectedMedia(item.data)}
-                    />
+                    <img src={mediaUrl} alt="" loading="lazy" />
                   )}
-                </div>
+                </button>
               )
             })}
           </div>
@@ -411,19 +468,40 @@ function App() {
 
           {/* Modal para ver media en grande */}
           {selectedMedia && (
-            <div className="modal" onClick={() => setSelectedMedia(null)}>
-              <button className="modal-close" onClick={() => setSelectedMedia(null)}>
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <div
+              className="modal"
+              role="dialog"
+              aria-modal="true"
+              aria-label={mediaLabel(selectedMedia)}
+            >
+              {/* El fondo cierra al hacer click: es una comodidad de mouse, no
+                  un control. role="presentation" lo declara como tal — el cierre
+                  de verdad son el botón X y la tecla Escape. */}
+              <div
+                className="modal-backdrop"
+                role="presentation"
+                onClick={() => setSelectedMedia(null)}
+              />
+
+              <button
+                type="button"
+                ref={modalCloseRef}
+                className="modal-close"
+                onClick={() => setSelectedMedia(null)}
+                aria-label="Cerrar"
+              >
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...decorativeSvg}>
                   <path d="M18 6L6 18M6 6l12 12"/>
                 </svg>
               </button>
-              <div className="modal-content" onClick={e => e.stopPropagation()}>
+
+              <div className="modal-content">
                 {selectedMedia.type === 'video' ? (
-                  <video controls autoPlay>
+                  <video controls autoPlay aria-label={mediaLabel(selectedMedia)}>
                     <source src={getMediaUrl(selectedMedia.src)} type="video/mp4" />
                   </video>
                 ) : (
-                  <img src={getMediaUrl(selectedMedia.src)} alt="" />
+                  <img src={getMediaUrl(selectedMedia.src)} alt={mediaLabel(selectedMedia)} />
                 )}
               </div>
             </div>
