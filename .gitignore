@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Editores
+.vscode/*
+!.vscode/extensions.json
+.idea
+
+# Dependencias y builds (cada proyecto tiene su .gitignore propio,
+# esto es la red de seguridad a nivel repo)
+node_modules
+dist
+*.local
+*.log
