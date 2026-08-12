@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { birthdayName, phrases, mediaItems, backgroundMusic } from './data/content'
+import { birthdayName, texts, phrases, questions, mediaItems, backgroundMusic } from './data/content'
 import './App.css'
 
 // Importar todos los archivos de media dinámicamente
@@ -117,27 +117,6 @@ function App() {
   const lastFocusedRef = useRef(null)
   
   const musicUrl = getMediaUrl(backgroundMusic)
-
-  const questions = [
-    {
-      question: "¿Dónde fue que nos conocimos de verdad?",
-      options: ["En un parque", "En una parada de bus", "En una salida con amigos"],
-      correct: 1,
-      hint: "Fue lo más random posible..."
-    },
-    {
-      question: "¿Cuándo es el pico y placa de la moto?",
-      options: ["Lunes", "Martes", "Miércoles"],
-      correct: 2,
-      hint: "Acuérdate qué día me dejaste abandonado en la lluvia en short..."
-    },
-    {
-      question: "¿Qué canción hubiésemos quedado muy mal?",
-      options: ["Adán y Eva", "Homerun", "Media Luna"],
-      correct: 1,
-      hint: "Decidido a mi jonrooon..."
-    }
-  ]
 
   const handleAnswer = (answerIndex) => {
     if (answerIndex === questions[currentQuestion].correct) {
@@ -336,13 +315,18 @@ function App() {
       {showIntro && (
         <div className="intro-screen">
           <div className="intro-content">
-            <p className="intro-subtitle">para ti</p>
+            <p className="intro-subtitle">{texts.introSubtitle}</p>
             <h1 className="intro-title">{birthdayName}</h1>
             <div className="intro-line"></div>
-            <p className="intro-message">Toda tú eres bella, no hay en ti defecto alguno.<br/><span className="verse-ref">(Cantares 4:7)</span></p>
-            
+            <p className="intro-message">
+              {texts.introMessage}
+              {texts.introMessageRef && (
+                <><br/><span className="verse-ref">{texts.introMessageRef}</span></>
+              )}
+            </p>
+
             <button type="button" className="enter-button" onClick={startQuiz}>
-              <span>entrar</span>
+              <span>{texts.enterButton}</span>
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" {...decorativeSvg}>
                 <path d="M5 12h14M12 5l7 7-7 7"/>
               </svg>
@@ -363,7 +347,7 @@ function App() {
           </button>
 
           <div className="intro-content quiz-content">
-            <p className="quiz-subtitle">¿En realidad eres tú?</p>
+            <p className="quiz-subtitle">{texts.quizSubtitle}</p>
             <p className="quiz-progress">{currentQuestion + 1} / {questions.length}</p>
             
             <h2 className="quiz-question">{questions[currentQuestion].question}</h2>
@@ -413,7 +397,7 @@ function App() {
           {/* Header minimalista */}
           <header className="header">
             <h1>{birthdayName}</h1>
-            <p>feliz cumpleaños</p>
+            <p>{texts.headerSubtitle}</p>
           </header>
 
           {/* Galería Masonry */}
@@ -459,10 +443,8 @@ function App() {
           {/* Mensaje final */}
           <footer className="footer">
             <div className="footer-content">
-              <p className="footer-quote">
-                "FELIZ CUMPLEAÑOS GUAPA "
-              </p>
-              <p className="footer-signature">Te quiero mucho ♡</p>
+              <p className="footer-quote">{texts.footerQuote}</p>
+              <p className="footer-signature">{texts.footerSignature}</p>
             </div>
           </footer>
 

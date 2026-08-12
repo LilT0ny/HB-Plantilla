@@ -15,41 +15,106 @@
 // ═══════════════════════════════════════════════════════════════════════════
 // NOMBRE DE LA PERSONA
 // ═══════════════════════════════════════════════════════════════════════════
-export const birthdayName = "Bonita";
+export const birthdayName = "Nao";
+
+// ═══════════════════════════════════════════════════════════════════════════
+// TEXTOS DE LA PÁGINA
+// Cada texto que se lee en pantalla vive acá. Antes estaban hardcodeados en el
+// JSX, lo que obligaba a tocar código para reusar la plantilla con otra persona.
+// ═══════════════════════════════════════════════════════════════════════════
+export const texts = {
+  // Pantalla de inicio
+  introSubtitle: "para ti",
+  introMessage: "Cada kilómetro, cada canción y cada teoría loca me traen acá.",
+  introMessageRef: "", // línea chica debajo del mensaje; dejalo "" si no querés
+  enterButton: "entrar",
+
+  // Quiz
+  quizSubtitle: "¿En realidad eres tú?",
+
+  // Galería
+  headerSubtitle: "feliz cumpleaños",
+  footerQuote: "FELIZ CUMPLEAÑOS, NAO",
+  footerSignature: "Te amo mucho ♡",
+};
 
 // ═══════════════════════════════════════════════════════════════════════════
 // FRASES ESPECIALES (aparecerán entre las fotos)
+//
+// Temática: Cars, The Big Bang Theory y The Beatles.
+// Se muestra una cada 4 fotos, así que con 32 items entran exactamente 8.
+// Están traducidas al español para que combinen con el resto de la página;
+// si preferís las líneas originales en inglés, es cambiar el campo `text`.
 // ═══════════════════════════════════════════════════════════════════════════
 export const phrases = [
   {
-    text: "Amar no es mirarse el uno al otro, sino mirar juntos en la misma dirección.",
-    author: "Antoine de Saint-Exupéry",
+    text: "Los autos no manejaban por ella para hacer buen tiempo. Manejaban para pasarla bien.",
+    author: "Sally Carrera, Cars",
   },
   {
-    text: "Lo que haces hoy puede mejorar todos tus mañanas.",
-    author: "Ralph Marston",
+    text: "Y al final, el amor que recibes es igual al amor que das.",
+    author: "The Beatles, «The End»",
   },
   {
-    text: "La felicidad no es algo hecho. Proviene de tus propias acciones.",
-    author: "Dalai Lama",
+    text: "Estamos hechos de partículas que existen desde el momento en que empezó el universo. Me gusta pensar que esos átomos viajaron catorce mil millones de años por el tiempo y el espacio para crearnos, para que pudiéramos estar juntos y completarnos.",
+    author: "Leonard Hofstadter, The Big Bang Theory",
   },
   {
-    text: "El secreto de la existencia no consiste solamente en vivir, sino en saber para qué se vive.",
-    author: "Fiódor Dostoyevski",
-  },
-  { text: "Donde hay amor, hay vida.", 
-    author: "Mahatma Gandhi" },
-  {
-    text: "La vida es lo que pasa mientras estás ocupado haciendo otros planes.",
-    author: "John Lennon",
+    text: "Gira a la derecha para ir a la izquierda.",
+    author: "Doc Hudson, Cars",
   },
   {
-    text: "Sé tú mismo; todos los demás ya están ocupados.",
-    author: "Oscar Wilde",
+    text: "Todo lo que necesitas es amor.",
+    author: "The Beatles, «All You Need Is Love»",
   },
   {
-    text: "El tiempo que disfrutas perdiéndolo no es tiempo perdido.",
-    author: "Bertrand Russell",
+    text: "No le temas al fracaso. Témele a no tener la oportunidad.",
+    author: "Sally Carrera, Cars",
+  },
+  {
+    text: "No estoy loco. Mi madre me hizo examinar.",
+    author: "Sheldon Cooper, The Big Bang Theory",
+  },
+  {
+    text: "Toma una canción triste y hazla mejor.",
+    author: "The Beatles, «Hey Jude»",
+  },
+];
+
+// ═══════════════════════════════════════════════════════════════════════════
+// PREGUNTAS DEL QUIZ
+//
+// Funciona como un candado: hay que acertar para pasar. Si se falla, se muestra
+// la pista y se puede reintentar.
+//
+// question : la pregunta
+// options  : las opciones que se muestran
+// correct  : ÍNDICE de la opción correcta, empezando en 0
+//            (0 = la primera opción, 1 = la segunda, 2 = la tercera)
+// hint     : la pista que aparece al fallar
+//
+// La respuesta correcta cae en una posición distinta en cada pregunta (3ª, 1ª,
+// 2ª) a propósito: si siempre fuera la primera, se nota el patrón y se puede
+// acertar sin saber la respuesta.
+// ═══════════════════════════════════════════════════════════════════════════
+export const questions = [
+  {
+    question: "¿Cuál es tu animal favorito?",
+    options: ["Perritos", "Mono", "Jirafa"],
+    correct: 2,
+    hint: "Aparece en The Last of Us...",
+  },
+  {
+    question: "¿Cómo se llaman tus mascotas?",
+    options: ["Rebeca y Theo", "Angel y Ares", "Kira y Eva"],
+    correct: 0,
+    hint: "Te los dejó tu tío favorito...",
+  },
+  {
+    question: "¿Cuál es tu comida favorita?",
+    options: ["Fritada", "Choclomote", "Sushi"],
+    correct: 1,
+    hint: "Lo comimos una vez en Otavalo...",
   },
 ];
 
