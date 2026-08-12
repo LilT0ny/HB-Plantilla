@@ -113,8 +113,7 @@ function App() {
   const [selectedMedia, setSelectedMedia] = useState(null)
   const audioRef = useRef(null)
   const hasInteracted = useRef(false)
-  const modalCloseRef = useRef(null)
-  const lastFocusedRef = useRef(null)
+  const dialogRef = useRef(null)
   
   const musicUrl = getMediaUrl(backgroundMusic)
 
@@ -249,25 +248,13 @@ function App() {
     return removeListeners
   }, [])
 
-  // Manejo de foco y Escape del modal. Sin esto, quien navega con teclado abre
-  // el modal y queda varado: el foco se queda atrás, en la galería, y no hay
-  // forma de cerrarlo sin mouse.
+  // Abrir el <dialog> con showModal(), no con el atributo `open`. Solo esa vía
+  // activa el modo modal del navegador, que trae gratis: foco atrapado dentro
+  // del diálogo, cierre con Escape, resto de la página inertizada y foco
+  // devuelto al elemento de origen al cerrar. Antes todo eso estaba a mano acá.
   useEffect(() => {
-    if (!selectedMedia) return
-
-    // Guardar quién tenía el foco para devolvérselo al cerrar
-    lastFocusedRef.current = document.activeElement
-    modalCloseRef.current?.focus()
-
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape') setSelectedMedia(null)
-    }
-    document.addEventListener('keydown', handleKeyDown)
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown)
-      lastFocusedRef.current?.focus?.()
-    }
+    const dialog = dialogRef.current
+    if (dialog && !dialog.open) dialog.showModal()
   }, [selectedMedia])
 
   const toggleMusic = () => {
@@ -450,26 +437,30 @@ function App() {
 
           {/* Modal para ver media en grande */}
           {selectedMedia && (
-            <div
+            // Sin role ni aria-modal: un <dialog> abierto con showModal() ya los
+            // expone de forma nativa, y repetirlos a mano puede contradecir al
+            // navegador.
+            //
+            // IMPORTANTE: cerrar SIEMPRE con close(), nunca limpiando el estado
+            // directamente. El navegador devuelve el foco a la tarjeta de origen
+            // como parte de close(); si en cambio desmontamos el diálogo de una,
+            // se salta ese paso y el foco cae al <body>. onClose sincroniza el
+            // estado de React después, y cubre también el Escape del navegador.
+            <dialog
+              ref={dialogRef}
               className="modal"
-              role="dialog"
-              aria-modal="true"
               aria-label={mediaLabel(selectedMedia)}
+              onClose={() => setSelectedMedia(null)}
+              onClick={(e) => {
+                // El área oscura de alrededor es el propio <dialog>: si el click
+                // cayó ahí y no en el contenido, se cierra.
+                if (e.target === dialogRef.current) e.currentTarget.close()
+              }}
             >
-              {/* El fondo cierra al hacer click: es una comodidad de mouse, no
-                  un control. role="presentation" lo declara como tal — el cierre
-                  de verdad son el botón X y la tecla Escape. */}
-              <div
-                className="modal-backdrop"
-                role="presentation"
-                onClick={() => setSelectedMedia(null)}
-              />
-
               <button
                 type="button"
-                ref={modalCloseRef}
                 className="modal-close"
-                onClick={() => setSelectedMedia(null)}
+                onClick={() => dialogRef.current?.close()}
                 aria-label="Cerrar"
               >
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" {...decorativeSvg}>
@@ -486,7 +477,7 @@ function App() {
                   <img src={getMediaUrl(selectedMedia.src)} alt={mediaLabel(selectedMedia)} />
                 )}
               </div>
-            </div>
+            </dialog>
           )}
         </div>
       )}
